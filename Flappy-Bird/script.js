@@ -19,6 +19,7 @@ let score_title = document.querySelector('.score_title');
 let maxScoreDisplay = document.getElementById('maxScore');
 
 let game_state = 'Start';
+let game_active = true; // Variable para rastrear si el juego está activo
 img.style.display = 'none';
 message.classList.add('messageStyle');
 
@@ -44,7 +45,7 @@ window.addEventListener("gamepadconnected", checkGamepad);
 
 // Iniciar el juego con el botón "X" del joystick
 function checkStartButton() {
-  if (gamepadIndex !== null && game_state !== 'Play') {
+  if (gamepadIndex !== null && game_state !== 'Play' && game_active) {
     document.querySelectorAll('.tube').forEach((e) => {
       e.remove();
     });
@@ -70,7 +71,7 @@ function play() {
   img.src = birdImages[randomImageIndex];
 
   function move() {
-    if (game_state != 'Play') return;
+    if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes
 
     let tubes = document.querySelectorAll('.tube');
     tubes.forEach((tube) => {
@@ -98,6 +99,20 @@ function play() {
             // Almacenar el nuevo puntaje máximo
             localStorage.setItem('maxScore', maxScore);
           }
+
+          game_active = false; // Establecer el juego como no activo
+
+          // Usar setTimeout para mostrar el mensaje durante 2 segundos antes de reiniciar
+          setTimeout(function () {
+            message.innerHTML = '';
+            message.classList.remove('messageStyle');
+            // Restablece la posición del pájaro
+            bird.style.top = '40vh';
+            game_active = true; // Establecer el juego como activo nuevamente
+            // Continuar el juego
+            requestAnimationFrame(move);
+          }, 2500);
+
           return;
         } else {
           if (tube_props.right < bird_props.left && tube_props.right + move_speed >= bird_props.left && !tube_passed) {
@@ -114,7 +129,7 @@ function play() {
   requestAnimationFrame(move);
 
   function apply_gravity() {
-    if (game_state != 'Play') return;
+    if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes
     bird_dy = bird_dy + gravity;
 
     // Detección del salto con el botón del joystick
@@ -148,7 +163,7 @@ function play() {
   let tube_gap = 30;
 
   function create_tube() {
-    if (game_state != 'Play') return;
+    if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes
 
     if (tube_separation > 70) {
       tube_separation = 0;
