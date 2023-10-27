@@ -26,8 +26,25 @@ message.classList.add('messageStyle');
 let maxScore = localStorage.getItem('maxScore') || 0;
 maxScoreDisplay.textContent = maxScore;
 
+// Función para detectar si un gamepad está conectado
+let gamepadIndex = null;
+
+function checkGamepad() {
+  const gamepads = navigator.getGamepads();
+  for (let i = 0; i < gamepads.length; i++) {
+    if (gamepads[i] && gamepads[i].buttons[0].pressed) {
+      gamepadIndex = i;
+      break;
+    }
+  }
+}
+
+// Detección del gamepad conectado
+window.addEventListener("gamepadconnected", checkGamepad);
+
+// Iniciar el juego con la barra espaciadora o el botón "X" del joystick
 document.addEventListener('keydown', (e) => {
-  if (e.key == 'Enter' && game_state != 'Play') {
+  if ((e.key == ' ' || (gamepadIndex !== null && e.key == 'x')) && game_state != 'Play') {
     document.querySelectorAll('.tube').forEach((e) => {
       e.remove();
     });
@@ -43,24 +60,6 @@ document.addEventListener('keydown', (e) => {
 });
 
 let bird_dy = 0;
-function handleGamepadInput() {
-  if (game_state === 'Play') {
-    const gamepads = navigator.getGamepads();
-    const gamepad = gamepads[0];
-
-    if (gamepad) {
-      // Comprueba si el botón "X" (botón 0) está siendo presionado
-      if (gamepad.buttons[0].pressed) {
-        bird_dy = -7.6;
-        img.src = birdImages[randomImageIndex];
-      }
-    }
-  }
-
-  requestAnimationFrame(handleGamepadInput);
-}
-
-requestAnimationFrame(handleGamepadInput);
 
 function play() {
   const randomImageIndex = Math.floor(Math.random() * birdImages.length);
@@ -113,18 +112,20 @@ function play() {
   function apply_gravity() {
     if (game_state != 'Play') return;
     bird_dy = bird_dy + gravity;
-    document.addEventListener('keydown', (e) => {
-      if (e.key == 'ArrowUp' || e.key == ' ') {
-        img.src = birdImages[randomImageIndex];
-        bird_dy = -7.6;
-      }
-    });
 
-    document.addEventListener('keyup', (e) => {
-      if (e.key == 'ArrowUp' || e.key == ' ') {
-        img.src = birdImages[randomImageIndex];
+    // Detección del salto con el botón del joystick
+    function checkJumpButton() {
+      if (gamepadIndex !== null) {
+        const gamepads = navigator.getGamepads();
+        const button = gamepads[gamepadIndex].buttons[0];
+        if (button.pressed) {
+          img.src = birdImages[randomImageIndex];
+          bird_dy = -7.6;
+        }
       }
-    });
+      requestAnimationFrame(checkJumpButton);
+    }
+    requestAnimationFrame(checkJumpButton);
 
     if (bird_props.top <= 0 || bird_props.bottom >= background.bottom) {
       game_state = 'End';
