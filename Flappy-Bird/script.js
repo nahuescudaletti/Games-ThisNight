@@ -42,9 +42,9 @@ function checkGamepad() {
 // Detección del gamepad conectado
 window.addEventListener("gamepadconnected", checkGamepad);
 
-// Iniciar el juego con la barra espaciadora o el botón "X" del joystick
-document.addEventListener('keydown', (e) => {
-  if ((e.key == ' ' || (gamepadIndex !== null && e.key == 'x')) && game_state != 'Play') {
+// Iniciar el juego con el botón "X" del joystick
+function checkStartButton() {
+  if (gamepadIndex !== null && game_state !== 'Play') {
     document.querySelectorAll('.tube').forEach((e) => {
       e.remove();
     });
@@ -57,7 +57,11 @@ document.addEventListener('keydown', (e) => {
     message.classList.remove('messageStyle');
     play();
   }
-});
+  requestAnimationFrame(checkStartButton);
+}
+
+// Llamar a la función para verificar el botón "X" del joystick
+checkStartButton();
 
 let bird_dy = 0;
 
