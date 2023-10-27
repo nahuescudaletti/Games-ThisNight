@@ -1,0 +1,68 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  user-select: none;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.world {
+  overflow: hidden;
+  position: relative;
+}
+
+.score {
+  position: absolute;
+  font-size: 3vmin;
+  right: 1vmin;
+  top: 1vmin;
+}
+
+.start-screen {
+  position: absolute;
+  font-size: 5vmin;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.hide {
+  display: none;
+}
+
+.ground {
+  --left: 0;
+  position: absolute;
+  width: 300%; /* Ancho original */
+  bottom: 0;
+  left: calc(var(--left) * 1%); /* Ajusta el valor según sea necesario para dejar espacio en la derecha */
+}
+
+.dino {
+  --bottom: 0;
+  position: absolute;
+  left: 1%;
+  height: 30%;
+  bottom: calc(var(--bottom) * 1%);
+}
+
+.hand {
+  z-index: 100;
+  --bottom: 0;
+  position: absolute;
+  left: 82%;
+  height: 40%;
+  bottom: calc(var(--bottom) * 1%);
+}
+
+.cactus {
+  position: absolute;
+  left: calc(var(--left) * 1%);
+  height: 10%; /* Ajusta la altura del "bullet" según sea necesario */
+  bottom: 15%; /* Agrega separación desde abajo */
+}
