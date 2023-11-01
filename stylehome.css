@@ -1,12 +1,23 @@
 body {
+    background-image: url('maxi123.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center top;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
     margin: 0;
-    padding: 0;
-    background: linear-gradient(to bottom, #51077c, #EC6EAD);
-    font-family: Arial, sans-serif;
+}
+
+.button-container {
+    position: absolute;
+    top: 62%; /* Ajusta el porcentaje según tu preferencia */
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .glass-button {
@@ -17,12 +28,16 @@ body {
     border-radius: 10px;
     font-size: 18px;
     cursor: pointer;
-    margin: 10px;
     text-decoration: none;
-    display: inline-block;
+    margin: 0 10px; /* Espacio horizontal entre los botones */
 }
 
 .glass-button:hover {
     background: rgba(255, 255, 255, 0.5);
     transform: scale(1.05);
+}
+
+/* Nueva regla CSS para los botones */
+.glass-button + .glass-button {
+    margin-left: 10px; /* Espacio horizontal entre los botones */
 }

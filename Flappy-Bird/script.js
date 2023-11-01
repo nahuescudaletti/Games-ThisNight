@@ -5,10 +5,10 @@ let sound_point = new Audio('sounds effect/point.mp3');
 let sound_die = new Audio('sounds effect/die.mp3');
 let tube_passed = false;
 
+// Define una matriz de imágenes para el pájaro (imagen en reposo y en vuelo)
 const birdImages = [
-  'images/Bird.png',
-  'images/roca.png',
-  'images/cardthisnight.png',
+  'images/up.png',  // Imagen en reposo
+  'images/down.png',
 ];
 
 let bird_props = bird.getBoundingClientRect();
@@ -29,6 +29,9 @@ maxScoreDisplay.textContent = maxScore;
 
 // Función para detectar si un gamepad está conectado
 let gamepadIndex = null;
+
+// Define una variable para rastrear si el botón "X" está presionado
+let isJumping = false;
 
 function checkGamepad() {
   const gamepads = navigator.getGamepads();
@@ -68,7 +71,7 @@ let bird_dy = 0;
 
 function play() {
   const randomImageIndex = Math.floor(Math.random() * birdImages.length);
-  img.src = birdImages[randomImageIndex];
+  img.src = birdImages[0]; // Establecer la imagen en reposo por defecto
 
   function move() {
     if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes
@@ -111,7 +114,7 @@ function play() {
             game_active = true; // Establecer el juego como activo nuevamente
             // Continuar el juego
             requestAnimationFrame(move);
-          }, 2500);
+          }, 1500);
 
           return;
         } else {
@@ -138,8 +141,16 @@ function play() {
         const gamepads = navigator.getGamepads();
         const button = gamepads[gamepadIndex].buttons[0];
         if (button.pressed) {
-          img.src = birdImages[randomImageIndex];
-          bird_dy = -7.6;
+          if (!isJumping) {
+            // Cambia la imagen del pájaro a la imagen en vuelo
+            img.src = birdImages[1];
+            bird_dy = -7.6;
+            isJumping = true;
+          }
+        } else {
+          // Cambia la imagen del pájaro a la imagen en reposo cuando se suelta el botón "X"
+          img.src = birdImages[0];
+          isJumping = false;
         }
       }
       requestAnimationFrame(checkJumpButton);
@@ -167,17 +178,17 @@ function play() {
 
     if (tube_separation > 70) {
       tube_separation = 0;
-      let tube_pos = Math.floor(Math.random() * 43) + 8;
+      let tube_pos = Math.floor(Math.random() * 43) + 20;
 
       let tube_top = document.createElement('img');
-      tube_top.src = 'images/fernetinvertido.png';
+      tube_top.src = 'images/FPIXEL3-removebg-preview.png';
       tube_top.className = 'tube';
       tube_top.style.top = tube_pos - 70 + 'vh';
       tube_top.style.left = '100vw';
       document.body.appendChild(tube_top);
 
       let tube_bottom = document.createElement('img');
-      tube_bottom.src = 'images/ferne.png';
+      tube_bottom.src = 'images/VASOPIXEL-removebg-preview.png';
       tube_bottom.className = 'tube';
       tube_bottom.style.top = tube_pos + tube_gap + 'vh';
       tube_bottom.style.left = '100vw';
