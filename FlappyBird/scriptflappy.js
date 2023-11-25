@@ -173,7 +173,7 @@ function play() {
     requestAnimationFrame(apply_gravity);
 
     let tube_separation = 0;
-    let tube_gap = 30;
+    let tube_gap = 35;
 
     function create_tube() {
         if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes

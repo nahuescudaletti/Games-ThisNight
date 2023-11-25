@@ -15,8 +15,20 @@ body {
   overflow: hidden;
   position: relative;
   background-color: red;
-  min-height: 100vh; /* Agrega esta línea */
+  min-height: 100vh;
+  width: 100%; /* Añade esta línea */
 }
+
+.ground {
+  --left: 0;
+  position: absolute;
+  width: 300%;
+  height: 100%;
+  bottom: 0;
+  left: calc(var(--left) * 1%);
+}
+
+
 
 .score {
   position: absolute;
@@ -37,19 +49,12 @@ body {
   display: none;
 }
 
-.ground {
-  --left: 0;
-  position: absolute;
-  width: 300%; /* Ancho original */
-  bottom: 0;
-  left: calc(var(--left) * 1%); /* Ajusta el valor según sea necesario para dejar espacio en la derecha */
-}
 
 .dino {
   --bottom: 0;
   position: absolute;
   left: 1%;
-  height: 15%;
+  height: 25%;
   bottom: calc(var(--bottom) * 1%);
 }
 
@@ -57,7 +62,7 @@ body {
   z-index: 100;
   --bottom: 0;
   position: absolute;
-  left: 82%;
+  left: 83%;
   height: 20%;
   bottom: calc(var(--bottom) * 1%);
 }
@@ -65,6 +70,6 @@ body {
 .cactus {
   position: absolute;
   left: calc(var(--left) * 1%);
-  height: 5%; /* Ajusta la altura del "bullet" según sea necesario */
+  height:4%; /* Ajusta la altura del "bullet" según sea necesario */
   bottom: 8%; /* Agrega separación desde abajo */
 }
