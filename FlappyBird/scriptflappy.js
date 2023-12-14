@@ -1,4 +1,4 @@
-let move_speed = 8, gravity = 0.5;
+let move_speed = 7, gravity = 0.5;
 let bird = document.querySelectorAll('.bird');
 let imgUp = document.getElementById('bird-up');
 let imgDown = document.getElementById('bird-down');
@@ -173,7 +173,7 @@ function play() {
     requestAnimationFrame(apply_gravity);
 
     let tube_separation = 0;
-    let tube_gap = 35;
+    let tube_gap = 40;
 
     function create_tube() {
         if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes
