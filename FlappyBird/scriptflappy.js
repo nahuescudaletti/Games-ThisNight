@@ -6,9 +6,8 @@ let sound_point = new Audio('sounds effect/point.mp3');
 let sound_die = new Audio('sounds effect/die.mp3');
 let tube_passed = false;
 
-// Define una matriz de imágenes para el pájaro (imagen en reposo y en vuelo)
 const birdImages = [
-    'images/up.png',  // Imagen en reposo
+    'images/up.png',
     'images/down.png',
 ];
 
@@ -29,31 +28,12 @@ message.classList.add('messageStyle');
 let maxScore = localStorage.getItem('maxScore') || 0;
 maxScoreDisplay.textContent = maxScore;
 
-// Función para detectar si un gamepad está conectado
-let gamepadIndex = null;
+let bird_dy = 0;
 
-// Define una variable para rastrear si el botón "X" está presionado
-let isJumping = false;
-
-function checkGamepad() {
-    const gamepads = navigator.getGamepads();
-    for (let i = 0; i < gamepads.length; i++) {
-        if (gamepads[i] && gamepads[i].buttons[0].pressed) {
-            gamepadIndex = i;
-            break;
-        }
-    }
-}
-
-// Detección del gamepad conectado
-window.addEventListener("gamepadconnected", checkGamepad);
-
-// Iniciar el juego con el botón "X" del joystick
-function checkStartButton() {
-    if (gamepadIndex !== null && game_state !== 'Play' && game_active) {
-        document.querySelectorAll('.tube').forEach((e) => {
-            e.remove();
-        });
+// Iniciar el juego con la barra espaciadora
+document.addEventListener('keydown', (e) => {
+    if (e.code === 'Space' && game_state !== 'Play' && game_active) {
+        document.querySelectorAll('.tube').forEach((e) => e.remove());
         bird[0].style.top = '40vh';
         bird[1].style.top = '40vh';
         game_state = 'Play';
@@ -63,21 +43,14 @@ function checkStartButton() {
         message.classList.remove('messageStyle');
         play();
     }
-    requestAnimationFrame(checkStartButton);
-}
-
-// Llamar a la función para verificar el botón "X" del joystick
-checkStartButton();
-
-let bird_dy = 0;
+});
 
 function play() {
     const randomImageIndex = Math.floor(Math.random() * birdImages.length);
-    //   imgUp.src = birdImages[0]; // Establecer la imagen en reposo por defecto
     imgUp.style.opacity = 0;
 
     function move() {
-        if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes
+        if (game_state != 'Play' || !game_active) return;
 
         let tubes = document.querySelectorAll('.tube');
         tubes.forEach((tube) => {
@@ -93,24 +66,20 @@ function play() {
                     bird_props.top + bird_props.height > tube_props.top
                 ) {
                     game_state = 'End';
-
                     message.innerHTML = 'Juego terminado'.fontcolor('red') + '<br>Tu puntuación: ' + score_val.innerHTML;
                     message.classList.add('messageStyle');
                     imgUp.style.opacity = 0;
-                    console.log("Hola")
                     imgDown.style.opacity = 0;
                     sound_die.play();
-                    // Verificar si el puntaje actual es mayor que el puntaje máximo
+
                     if (parseInt(score_val.innerHTML) > maxScore) {
                         maxScore = parseInt(score_val.innerHTML);
                         maxScoreDisplay.textContent = maxScore;
-                        // Almacenar el nuevo puntaje máximo
                         localStorage.setItem('maxScore', maxScore);
                     }
 
-                    game_active = false; // Establecer el juego como no activo
+                    game_active = false;
 
-                    // Usar setTimeout para mostrar el mensaje durante 2 segundos antes de reiniciar
                     setTimeout(function () {
                         window.location.reload();
                     }, 3000);
@@ -131,32 +100,8 @@ function play() {
     requestAnimationFrame(move);
 
     function apply_gravity() {
-        if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes
+        if (game_state != 'Play' || !game_active) return;
         bird_dy = bird_dy + gravity;
-
-        // Detección del salto con el botón del joystick
-        function checkJumpButton() {
-            if (gamepadIndex !== null) {
-                const gamepads = navigator.getGamepads();
-                const button = gamepads[gamepadIndex].buttons[0];
-                if (button.pressed) {
-                    if (!isJumping) {
-                        // Cambia la imagen del pájaro a la imagen en vuelo
-                        imgUp.style.opacity = 0;
-                        imgDown.style.opacity = 1;
-                        bird_dy = -7.6;
-                        isJumping = true;
-                    }
-                } else if (isJumping && game_state === 'Play') {
-                    // Cambia la imagen del pájaro a la imagen en reposo cuando se suelta el botón "X"
-                    imgUp.style.opacity = 1;
-                    imgDown.style.opacity = 0;
-                    isJumping = false;
-                }
-            }
-            requestAnimationFrame(checkJumpButton);
-        }
-        requestAnimationFrame(checkJumpButton);
 
         if (bird_props.top <= 0 || bird_props.bottom >= background.bottom) {
             game_state = 'End';
@@ -165,6 +110,7 @@ function play() {
             message.classList.remove('messageStyle');
             return;
         }
+
         bird[0].style.top = bird_props.top + bird_dy + 'px';
         bird[1].style.top = bird_props.top + bird_dy + 'px';
         bird_props = bird[0].getBoundingClientRect();
@@ -172,11 +118,27 @@ function play() {
     }
     requestAnimationFrame(apply_gravity);
 
+    // Manejar el salto con la barra espaciadora
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space' && game_state === 'Play') {
+            imgUp.style.opacity = 0;
+            imgDown.style.opacity = 1;
+            bird_dy = -7.6;
+        }
+    });
+
+    document.addEventListener('keyup', (e) => {
+        if (e.code === 'Space' && game_state === 'Play') {
+            imgUp.style.opacity = 1;
+            imgDown.style.opacity = 0;
+        }
+    });
+
     let tube_separation = 0;
     let tube_gap = 40;
 
     function create_tube() {
-        if (game_state != 'Play' || !game_active) return; // Si el juego no está activo, no continúes
+        if (game_state != 'Play' || !game_active) return;
 
         if (tube_separation > 70) {
             tube_separation = 0;
