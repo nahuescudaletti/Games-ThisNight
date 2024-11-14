@@ -1,4 +1,4 @@
-let move_speed = 7, gravity = 0.5;
+let move_speed = 10, gravity = 0.5;
 let bird = document.querySelectorAll('.bird');
 let imgUp = document.getElementById('bird-up');
 let imgDown = document.getElementById('bird-down');
@@ -145,14 +145,14 @@ function play() {
             let tube_pos = Math.floor(Math.random() * 43) + 20;
 
             let tube_top = document.createElement('img');
-            tube_top.src = 'images/FPIXEL3-removebg-preview.png';
+            tube_top.src = 'images/speedinvertido.png';
             tube_top.className = 'tube';
             tube_top.style.top = tube_pos - 70 + 'vh';
             tube_top.style.left = '100vw';
             document.body.appendChild(tube_top);
 
             let tube_bottom = document.createElement('img');
-            tube_bottom.src = 'images/VASOPIXEL-removebg-preview.png';
+            tube_bottom.src = 'images/speedlata.png';
             tube_bottom.className = 'tube';
             tube_bottom.style.top = tube_pos + tube_gap + 'vh';
             tube_bottom.style.left = '100vw';
