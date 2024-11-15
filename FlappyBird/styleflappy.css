@@ -8,7 +8,7 @@
 .background {
     height: 100vh;
     width: 100vw;
-    background: url('images/speed-fondo.jpg') no-repeat center center fixed;
+    background: url('images/speed-fondo-negro.jpg') no-repeat center center fixed;
     -webkit-background-size: 100% 100%;
     -moz-background-size: 100% 100%;
     -o-background-size: 100% 100%;
@@ -75,7 +75,7 @@
     position: fixed;
     z-index: 10;
     height: 10vh;
-    font-size: 7vh; /* Tamaño más pequeño para que quepa debajo de Score */
+    font-size: 5vh; /* Tamaño más pequeño para que quepa debajo de Score */
     color: greenyellow;
     -webkit-text-stroke-width: 2px;
     -webkit-text-stroke-color: black;
@@ -93,13 +93,13 @@
         white-space: nowrap;
     }
     .score {
-        font-size: 8vh;
+        font-size: 4vh;
     }
     .bird {
-        width: 120px;
-        height: 90px;
+        width: 100px;
+        height: 100px;
     }
     .tube {
-        width: 14vw;
+        width: 35vw;
     }
 }

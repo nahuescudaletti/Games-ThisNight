@@ -1,4 +1,4 @@
-let move_speed = 10, gravity = 0.5;
+let move_speed = 7, gravity = 0.5;
 let bird = document.querySelectorAll('.bird');
 let imgUp = document.getElementById('bird-up');
 let imgDown = document.getElementById('bird-down');
@@ -140,7 +140,7 @@ function play() {
     function create_tube() {
         if (game_state != 'Play' || !game_active) return;
 
-        if (tube_separation > 70) {
+        if (tube_separation > 50) {
             tube_separation = 0;
             let tube_pos = Math.floor(Math.random() * 43) + 20;
 
