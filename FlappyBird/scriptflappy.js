@@ -1,4 +1,4 @@
-let move_speed = 7, gravity = 0.5;
+let move_speed = 8, gravity = 0.5;
 let bird = document.querySelectorAll('.bird');
 let imgUp = document.getElementById('bird-up');
 let imgDown = document.getElementById('bird-down');
@@ -7,8 +7,8 @@ let sound_die = new Audio('sounds effect/die.mp3');
 let tube_passed = false;
 
 const birdImages = [
-    'images/up.png',
-    'images/down.png',
+    'images/speed-card-up.png',
+    'images/speed-card-down.png',
 ];
 
 let bird_props = bird[0].getBoundingClientRect();
@@ -135,7 +135,7 @@ function play() {
     });
 
     let tube_separation = 0;
-    let tube_gap = 40;
+    let tube_gap = 50;
 
     function create_tube() {
         if (game_state != 'Play' || !game_active) return;
@@ -145,14 +145,14 @@ function play() {
             let tube_pos = Math.floor(Math.random() * 43) + 20;
 
             let tube_top = document.createElement('img');
-            tube_top.src = 'images/speedinvertido.png';
+            tube_top.src = 'images/speed-zero-invertido.png';
             tube_top.className = 'tube';
             tube_top.style.top = tube_pos - 70 + 'vh';
             tube_top.style.left = '100vw';
             document.body.appendChild(tube_top);
 
             let tube_bottom = document.createElement('img');
-            tube_bottom.src = 'images/speedlata.png';
+            tube_bottom.src = 'images/speed-zero.png';
             tube_bottom.className = 'tube';
             tube_bottom.style.top = tube_pos + tube_gap + 'vh';
             tube_bottom.style.left = '100vw';
